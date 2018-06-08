@@ -15,7 +15,10 @@ const request = require('request'),
 const ARCH_MAPPING = {
     "ia32": "386",
     "x64": "amd64",
-    "arm": "arm"
+    "arm": "arm",
+    "arm64": "arm64",
+    "mips": "mips",
+    "ppc64": "ppc64"
 };
 
 // Mapping between Node's `process.platform` to Golang's
@@ -23,7 +26,8 @@ const PLATFORM_MAPPING = {
     "darwin": "darwin",
     "linux": "linux",
     "win32": "windows",
-    "freebsd": "freebsd"
+    "freebsd": "freebsd",
+    "openbsd": "openbsd"
 };
 
 function getInstallationPath(callback) {
