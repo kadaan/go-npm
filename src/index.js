@@ -17,7 +17,7 @@ const ARCH_MAPPING = {
     "arm": "arm"
 };
 
-// Mapping between Node's `process.platform` to Golang's 
+// Mapping between Node's `process.platform` to Golang's
 const PLATFORM_MAPPING = {
     "darwin": "darwin",
     "linux": "linux",
@@ -218,6 +218,3 @@ if (argv && argv.length > 2) {
         }
     });
 }
-
-
-
