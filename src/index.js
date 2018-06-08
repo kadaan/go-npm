@@ -121,6 +121,7 @@ function parsePackageJson() {
     // We have validated the config. It exists in all its glory
     let binName = packageJson.goBinary.name;
     let binPath = packageJson.goBinary.path;
+    let tarOptions = packageJson.goBinary.tarOptions;
     let checksums = packageJson.goBinary.checksums;
     let url = packageJson.goBinary.url;
     let version = packageJson.version;
@@ -140,6 +141,7 @@ function parsePackageJson() {
     return {
         binName: binName,
         binPath: binPath,
+        tarOptions: tarOptions,
         checksums: checksums,
         url: url,
         version: version
@@ -162,7 +164,7 @@ function install(callback) {
 
     mkdirp.sync(opts.binPath);
     let ungz = zlib.createGunzip();
-    let untar = tar.Extract({path: opts.binPath});
+    let untar = tar.Extract(Object.assign({path: opts.binPath}, opts.tarOptions));
 
     ungz.on('error', callback);
     untar.on('error', callback);
