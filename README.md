@@ -73,6 +73,9 @@ You need to tell `go-npm` where to download the binaries from, and where to inst
 "goBinary": {
       "name": "command-name",
       "path": "./bin",
+      "tarOptions": {
+        "strip": 1,
+      },
       "url": "https://github.com/user/my-go-package/releases/download/v{{version}}/myGoPackage_{{version}}_{{platform}}_{{arch}}.tar.gz",
       "checksums": {
         "myGoPackage_v0.4.2_darwin_386.tar.gz": "383afca9f4ebb53bc9a9ce2b643d686c28868c05e225b64c0694140e628b928b",
@@ -82,6 +85,7 @@ You need to tell `go-npm` where to download the binaries from, and where to inst
 
 * *name*: Name of the command users will use to run your binary.
 * *path*: Temporary path where binaries will be downloaded to
+* *tarOptions*: Additional options to pass to the `tar.Extract` command.
 * *url*: HTTP Web server where binaries are hosted.
 * *checksums*: Object whose keys are the names of candidate download files and whose values are the expected sha256 checksum of the downloaded file.
 
