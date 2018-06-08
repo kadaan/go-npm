@@ -71,6 +71,7 @@ You need to tell `go-npm` where to download the binaries from, and where to inst
 
 ```
 "goBinary": {
+      "version": "0.0.1",
       "name": "command-name",
       "path": "./bin",
       "tarOptions": {
@@ -85,8 +86,9 @@ You need to tell `go-npm` where to download the binaries from, and where to inst
 
 * *name*: Name of the command users will use to run your binary.
 * *path*: Temporary path where binaries will be downloaded to
-* *tarOptions*: Additional options to pass to the `tar.Extract` command.
+* *version*: Version of your binary to download and install (defalts to `package.version` if not set).
 * *url*: HTTP Web server where binaries are hosted.
+* *tarOptions*: Additional options to pass to the `tar.Extract` command.
 * *checksums*: Object whose keys are the names of candidate download files and whose values are the expected sha256 checksum of the downloaded file.
 
 Following variables are available to customize the URL:

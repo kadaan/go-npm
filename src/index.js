@@ -72,12 +72,12 @@ function verifyAndPlaceBinary(binName, binPath, callback) {
 
 function validateConfiguration(packageJson) {
 
-    if (!packageJson.version) {
-        return "'version' property must be specified";
-    }
-
     if (!packageJson.goBinary || typeof(packageJson.goBinary) !== "object") {
         return "'goBinary' property must be defined and be an object";
+    }
+
+    if (!packageJson.version && !packageJson.goBinary.version) {
+        return "'version' property must be specified";
     }
 
     if (!packageJson.goBinary.name) {
@@ -128,7 +128,7 @@ function parsePackageJson() {
     let tarOptions = packageJson.goBinary.tarOptions;
     let checksums = packageJson.goBinary.checksums;
     let url = packageJson.goBinary.url;
-    let version = packageJson.version;
+    let version = packageJson.goBinary.version || packageJson.version;
     if (version[0] === 'v') version = version.substr(1);  // strip the 'v' if necessary v0.0.1 => 0.0.1
 
     // Binary name on Windows has .exe suffix
