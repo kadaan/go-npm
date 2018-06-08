@@ -73,12 +73,17 @@ You need to tell `go-npm` where to download the binaries from, and where to inst
 "goBinary": {
       "name": "command-name",
       "path": "./bin",
-      "url": "https://github.com/user/my-go-package/releases/download/v{{version}}/myGoPackage_{{version}}_{{platform}}_{{arch}}.tar.gz"
+      "url": "https://github.com/user/my-go-package/releases/download/v{{version}}/myGoPackage_{{version}}_{{platform}}_{{arch}}.tar.gz",
+      "checksums": {
+        "myGoPackage_v0.4.2_darwin_386.tar.gz": "383afca9f4ebb53bc9a9ce2b643d686c28868c05e225b64c0694140e628b928b",
+        "myGoPackage_v0.4.2_darwin_amd64.tar.gz": "6ab8e802029b878b849ec2d726834197211d54faecbd61f00610df90f50a75ef",
+      }
 ```
 
-* *name*: Name of the command users will use to run your binary. 
+* *name*: Name of the command users will use to run your binary.
 * *path*: Temporary path where binaries will be downloaded to
 * *url*: HTTP Web server where binaries are hosted.
+* *checksums*: Object whose keys are the names of candidate download files and whose values are the expected sha256 checksum of the downloaded file.
 
 Following variables are available to customize the URL:
 * `{{version}}`: Version number read from  `package.json` file. When you publish your package to NPM, it will use this version number. Ex: 0.0.1
