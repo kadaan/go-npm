@@ -8,7 +8,8 @@ const request = require('request'),
     zlib = require('zlib'),
     mkdirp = require('mkdirp'),
     fs = require('fs'),
-    exec = require('child_process').exec;
+    exec = require('child_process').exec,
+    hasha = require('hasha');
 
 // Mapping from Node's `process.arch` to Golang's `$GOARCH`
 const ARCH_MAPPING = {
@@ -120,6 +121,7 @@ function parsePackageJson() {
     // We have validated the config. It exists in all its glory
     let binName = packageJson.goBinary.name;
     let binPath = packageJson.goBinary.path;
+    let checksums = packageJson.goBinary.checksums;
     let url = packageJson.goBinary.url;
     let version = packageJson.version;
     if (version[0] === 'v') version = version.substr(1);  // strip the 'v' if necessary v0.0.1 => 0.0.1
@@ -138,6 +140,7 @@ function parsePackageJson() {
     return {
         binName: binName,
         binPath: binPath,
+        checksums: checksums,
         url: url,
         version: version
     }
@@ -174,6 +177,30 @@ function install(callback) {
     req.on('response', function(res) {
         if (res.statusCode !== 200) return callback("Error downloading binary. HTTP Status Code: " + res.statusCode);
 
+        const filename = path.basename(opts.url)
+        const checksum = opts.checksums[filename][opts.version]
+
+        // Verify the downloaded file.
+        if (checksum) {
+          console.log('Verifying downloaded file using checksum', checksum)
+          hasha.fromStream(req, { algorithm: 'sha256' })
+            .then(hash => {
+              console.log('Generated hash from downloaded file', hash)
+              const result = checksum == hash
+              if (result) {
+                console.log('Verified checksum of downloaded file')
+                return null
+              }
+              console.error('Checksum did not match')
+              return callback(new Error('Checksum did not match downloaded file'))
+            })
+            .catch(err => {
+              console.error('Error verifying checksum of downloaded file', err)
+              return callback(new Error('Error verifying checksum of downloaded file'))
+            })
+        }
+
+        // Untar and process the downloaded file.
         req.pipe(ungz).pipe(untar);
     });
 }
