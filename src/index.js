@@ -184,7 +184,7 @@ function install(callback) {
         if (res.statusCode !== 200) return callback("Error downloading binary. HTTP Status Code: " + res.statusCode);
 
         const filename = path.basename(opts.url)
-        const checksum = opts.checksums[filename][opts.version]
+        const checksum = opts.checksums[filename];
 
         // Verify the downloaded file.
         if (checksum) {
